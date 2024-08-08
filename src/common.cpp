@@ -638,7 +638,7 @@ PyObject **seq_get(PyObject *seq, size_t *size_out, PyObject **temp_out) noexcep
 #if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
     if (PyTuple_CheckExact(seq)) {
         size = (size_t) PyTuple_GET_SIZE(seq);
-        result = ((PyTupleObject *) seq)->ob_item;
+        result = PySequence_Fast_ITEMS((PyObject*)((PyTupleObject *) seq));
         /* Special case for zero-sized lists/tuples. CPython
            sets ob_item to NULL, which this function incidentally uses to
            signal an error. Return a nonzero pointer that will, however,
@@ -647,7 +647,7 @@ PyObject **seq_get(PyObject *seq, size_t *size_out, PyObject **temp_out) noexcep
             result = (PyObject **) 1;
     } else if (PyList_CheckExact(seq)) {
         size = (size_t) PyList_GET_SIZE(seq);
-        result = ((PyListObject *) seq)->ob_item;
+        result = PySequence_Fast_ITEMS((PyObject*)((PyListObject *) seq));
         if (size == 0) // ditto
             result = (PyObject **) 1;
     } else if (PySequence_Check(seq)) {
@@ -731,7 +731,7 @@ PyObject **seq_get_with_size(PyObject *seq, size_t size,
 #if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
     if (PyTuple_CheckExact(seq)) {
         if (size == (size_t) PyTuple_GET_SIZE(seq)) {
-            result = ((PyTupleObject *) seq)->ob_item;
+            result = PySequence_Fast_ITEMS((PyObject*)((PyTupleObject *) seq));
             /* Special case for zero-sized lists/tuples. CPython
                sets ob_item to NULL, which this function incidentally uses to
                signal an error. Return a nonzero pointer that will, however,
@@ -741,7 +741,7 @@ PyObject **seq_get_with_size(PyObject *seq, size_t size,
         }
     } else if (PyList_CheckExact(seq)) {
         if (size == (size_t) PyList_GET_SIZE(seq)) {
-            result = ((PyListObject *) seq)->ob_item;
+            result = PySequence_Fast_ITEMS((PyObject*)((PyListObject *) seq));
             if (size == 0) // ditto
                 result = (PyObject **) 1;
         }

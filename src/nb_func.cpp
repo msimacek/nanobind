@@ -537,7 +537,7 @@ static PyObject *nb_func_vectorcall_complex(PyObject *self,
         kwnames_interned &= ((PyASCIIObject *) key)->state.interned != 0;
     }
     if (NB_LIKELY(kwnames_interned)) {
-        kwnames = ((PyTupleObject *) kwargs_in)->ob_item;
+        kwnames = PySequence_Fast_ITEMS((PyObject*)((PyTupleObject *) kwargs_in));
         goto traverse_overloads;
     }
 #endif

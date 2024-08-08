@@ -856,18 +856,18 @@ inline detail::dict_iterator dict::end() const { return { }; }
 
 #if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
 inline detail::fast_iterator tuple::begin() const {
-    return ((PyTupleObject *) m_ptr)->ob_item;
+    return PySequence_Fast_ITEMS((PyObject*)((PyTupleObject *) m_ptr));
 }
 inline detail::fast_iterator tuple::end() const {
     PyTupleObject *v = (PyTupleObject *) m_ptr;
-    return v->ob_item + v->ob_base.ob_size;
+    return PySequence_Fast_ITEMS((PyObject*)v) + v->ob_base.ob_size;
 }
 inline detail::fast_iterator list::begin() const {
-    return ((PyListObject *) m_ptr)->ob_item;
+    return PySequence_Fast_ITEMS((PyObject*)((PyListObject *) m_ptr));
 }
 inline detail::fast_iterator list::end() const {
     PyListObject *v = (PyListObject *) m_ptr;
-    return v->ob_item + v->ob_base.ob_size;
+    return PySequence_Fast_ITEMS((PyObject*)v) + v->ob_base.ob_size;
 }
 #endif
 
