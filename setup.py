@@ -78,6 +78,7 @@ with TemporaryDirectory() as temp_dir:
             'cmake/nanobind-config.cmake',
             'cmake/darwin-ld-cpython.sym',
             'cmake/darwin-ld-pypy.sym',
+            'cmake/darwin-ld-graalpy.sym',
             'src/*.h',
             'src/*.cpp'
         ]}
