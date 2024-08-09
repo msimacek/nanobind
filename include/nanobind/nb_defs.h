@@ -153,7 +153,7 @@
 #  define NB_DOMAIN_STR nullptr
 #endif
 
-#if !defined(PYPY_VERSION)
+#if !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
 #  if PY_VERSION_HEX < 0x030A0000
 #    define NB_TYPE_GET_SLOT_IMPL 1 // Custom implementation of nb::type_get_slot
 #  else

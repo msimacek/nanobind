@@ -925,7 +925,7 @@ bool load_f32(PyObject *o, uint8_t flags, float *out) noexcept {
     return false;
 }
 
-#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && PY_VERSION_HEX < 0x030c0000
+#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON) && PY_VERSION_HEX < 0x030c0000
 // Direct access for compact integers. These functions are
 // available as part of Python starting with version 3.12b1+
 
@@ -941,7 +941,7 @@ NB_INLINE Py_ssize_t PyUnstable_Long_CompactValue(const PyLongObject *o) {
 template <typename T, bool Recurse = true>
 NB_INLINE bool load_int(PyObject *o, uint32_t flags, T *out) noexcept {
     if (NB_LIKELY(PyLong_CheckExact(o))) {
-#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
+#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
         PyLongObject *l = (PyLongObject *) o;
 
         // Fast path for compact integers

@@ -530,7 +530,7 @@ static PyObject *nb_func_vectorcall_complex(PyObject *self,
     // but we can't rely on that; it fails for things like fn(**json.loads(...)).
     PyObject **kwnames = nullptr;
 
-#if !defined(PYPY_VERSION) && !defined(Py_LIMITED_API)
+#if !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON) && !defined(Py_LIMITED_API)
     bool kwnames_interned = true;
     for (size_t i = 0; i < nkwargs_in; ++i) {
         PyObject *key = NB_TUPLE_GET_ITEM(kwargs_in, i);
@@ -557,7 +557,7 @@ static PyObject *nb_func_vectorcall_complex(PyObject *self,
             cleanup.append(key_interned);
     }
 
-#if !defined(PYPY_VERSION) && !defined(Py_LIMITED_API)
+#if !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON) && !defined(Py_LIMITED_API)
   traverse_overloads:
 #endif
 

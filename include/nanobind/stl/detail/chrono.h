@@ -18,7 +18,7 @@
 // function calls that can fail. We use the limited-API logic on PyPy
 // in order to be able to handle errors better.
 
-#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
+#if !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
 #include <datetime.h>
 #endif
 
@@ -60,7 +60,7 @@ PyObject* pack_datetime(int year, int month, int day,
 // order to avoid increasing the library size for users who don't care
 // about datetimes.
 
-#if defined(Py_LIMITED_API) || defined(PYPY_VERSION)
+#if defined(Py_LIMITED_API) || defined(PYPY_VERSION) || defined(GRAALVM_PYTHON)
 
 struct datetime_types_t {
     // Types defined by the datetime module
@@ -205,7 +205,7 @@ inline PyObject* pack_datetime(int year, int month, int day,
     }
 }
 
-#else // !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
+#else // !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
 
 NB_NOINLINE inline bool unpack_timedelta(PyObject *o, int *days,
                                          int *secs, int *usecs) {
@@ -286,4 +286,4 @@ inline PyObject* pack_datetime(int year, int month, int day,
                                       hour, minute, second, usec);
 }
 
-#endif // !defined(Py_LIMITED_API) && !defined(PYPY_VERSION)
+#endif // !defined(Py_LIMITED_API) && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)

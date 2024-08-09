@@ -232,7 +232,7 @@ static void internals_cleanup() {
 
     *is_alive_ptr = false;
 
-#if !defined(PYPY_VERSION)
+#if !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
     /* The memory leak checker is unsupported on PyPy, see
        see https://foss.heptapod.net/pypy/pypy/-/issues/3855 */
 
@@ -327,7 +327,7 @@ NB_NOINLINE void init(const char *name) {
     if (internals)
         return;
 
-#if defined(PYPY_VERSION)
+#if defined(PYPY_VERSION) || defined(GRAALVM_PYTHON)
     PyObject *dict = PyEval_GetBuiltins();
 #elif PY_VERSION_HEX < 0x03090000
     PyObject *dict = PyInterpreterState_GetDict(_PyInterpreterState_Get());
@@ -397,7 +397,7 @@ NB_NOINLINE void init(const char *name) {
     is_alive_ptr = &is_alive_value;
     p->is_alive_ptr = is_alive_ptr;
 
-#if PY_VERSION_HEX < 0x030C0000 && !defined(PYPY_VERSION)
+#if PY_VERSION_HEX < 0x030C0000 && !defined(PYPY_VERSION) && !defined(GRAALVM_PYTHON)
     /* The implementation of typing.py on CPython <3.12 tends to introduce
        spurious reference leaks that upset nanobind's leak checker. The
        following band-aid, installs an 'atexit' handler that clears LRU caches

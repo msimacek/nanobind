@@ -85,7 +85,7 @@ NB_MODULE(test_chrono_ext, m) {
         .def_rw("timestamp_ms", &different_resolutions::timestamp_ms)
         .def_rw("timestamp_us", &different_resolutions::timestamp_us);
 
-#if defined(Py_LIMITED_API) || defined(PYPY_VERSION)
+#if defined(Py_LIMITED_API) || defined(PYPY_VERSION) || defined(GRAALVM_PYTHON)
     m.attr("access_via_python") = true;
 #else
     m.attr("access_via_python") = false;

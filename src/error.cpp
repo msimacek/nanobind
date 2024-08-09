@@ -144,7 +144,7 @@ const char *python_error::what() const noexcept {
 #endif
     object exc_traceback = traceback();
 
-#if defined(Py_LIMITED_API) || defined(PYPY_VERSION)
+#if defined(Py_LIMITED_API) || defined(PYPY_VERSION) || defined(GRAALVM_PYTHON)
     object mod = module_::import_("traceback"),
            result = mod.attr("format_exception")(exc_type, exc_value, exc_traceback);
     m_what = detail::strdup_check(borrow<str>(str("\n").attr("join")(result)).c_str());
