@@ -34,7 +34,9 @@ PyTypeObject *nb_static_property_tp() noexcept {
         PyType_Slot slots[] = {
             { Py_tp_base, &PyProperty_Type },
             { Py_tp_descr_get, (void *) nb_static_property_descr_get },
-            { Py_tp_members, members },
+            #if !defined(GRAALVM_PYTHON)
+                { Py_tp_members, members },
+            #endif
             { 0, nullptr }
         };
 
